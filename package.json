@@ -1,0 +1,25 @@
+{
+  "name": "node-pandoc",
+  "version": "0.1.0",
+  "description": "Interacti with Pandoc from NodeJS. *Requires Pandoc to be installed.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eshinn/node-pandoc.git"
+  },
+  "keywords": [
+    "pandoc",
+    "node",
+    "docx",
+    "markdown"
+  ],
+  "author": "Eric Shinn <eric.shinn@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eshinn/node-pandoc/issues"
+  },
+  "homepage": "https://github.com/eshinn/node-pandoc#readme"
+}
