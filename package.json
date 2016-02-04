@@ -1,6 +1,6 @@
 {
   "name": "node-pandoc",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Interact with Pandoc from NodeJS. *Requires Pandoc to be installed.",
   "main": "index.js",
   "scripts": {
