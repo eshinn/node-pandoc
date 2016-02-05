@@ -31,6 +31,187 @@ npm install node-pandoc --save-dev
 
 Node-Pandoc is simply a bridge between the Pandoc CLI (command-line interface) and NodeJS.
 
+## Usage
+
+**pandoc ( _src_ _args_ [_options_] _callback_ )**
+
+### Parameters
+
+#### src
+> The _src_ can be either the location of a file (_./content/file.docx_) or a string of textual input ("_# Hello, Bananas_").
+
+#### args
+> The same list of arguments that pandoc accepts on the command line. Arguments are accepted as either a full String or as an Array.
+
+#### options
+> The options parameter accepts and passes along a Node Child_Process.Spawn object and is completely optional. View [a _complete_ list of Pandoc options on the Pandoc website](http://pandoc.org/README.html#options) or pull it from the command-line by typing:  
+```$ pandoc -h```
+
+#### callback
+> Function that call it called back with the parameters of (_error_, _result_).
+
+
+
+### Examples of Using Node-Pandoc
+
+Converting a word.docx file to a markdown.md
+
+```js
+// In EcmaScript 5...
+
+var nodePandoc = require('node-pandoc');
+var src, args, callback;
+
+src = './word.docx';
+
+// Arguments can be either a single string:
+args = '-f docx -t markdown -o ./markdown.md';
+// Or in an array of strings -- careful no spaces are present:
+args = ['-f','docx','-t','markdown','-o','markdown.md'];
+
+// Set your callback function
+callback = function (err, result) {
+
+  if (err) {
+    console.error('Oh Nos: ',err);
+  }
+
+  // For output to files, the 'result' will be a boolean 'true'.
+  // Otherwise, the converted value will be returned.
+  console.log(result);
+  return result;
+};
+
+// Call pandoc
+nodePandoc(src, args, callback);
+```
+```js
+// In ES-6 (ES-2015)
+import nodePandoc from 'node-pandoc'
+
+let src = './word.docx';
+
+// Arguments can be either a single String or in an Array
+let args = '-f docx -t markdown -o ./markdown.md';
+
+// Set your callback function
+const callback = (err, result)=> {
+
+  if (err) console.error('Oh Nos: ',err)
+  return console.log(result), result
+}
+
+// Call pandoc
+nodePandoc(src, args, callback);
+```
+
+Converting a word.docx file and returning HTML.
+
+```js
+var pandoc = require('node-pandoc'),
+    src = './word.docx',
+    // Arguments in either a single String or as an Array:
+    args = '-f docx -t html5';
+
+// Set your callback function
+callback = function (err, result) {
+  if (err) console.error('Oh Nos: ',err);
+  // Without the -o arg, the converted value will be returned.
+  return console.log(result), result;
+};
+
+// Call pandoc
+pandoc(src, args, callback);
+```
+
+This also works the other way &rsquo;round; converting a bit of HTML and saving it as word.docx
+
+```js
+var pandoc = require('node-pandoc'),
+    src = '<h1>Hello</h1><p>It&rsquo;s bananas</p>',
+    // Arguments in either a single String or as an Array:
+    args = '-f html -t docx -o word.docx';
+
+// Set your callback function
+callback = function (err, result) {
+  if (err) console.error('Oh Nos: ',err);
+  // Without the -o arg, the converted value will be returned.
+  return console.log(result), result;
+};
+
+// Call pandoc
+pandoc(src, args, callback);
+```
+
+Or give-a-string/get-a-string: Markdown -> HTML
+
+```js
+var pandoc = require('node-pandoc'),
+    src = '# Hello \n\nIt\'s bananas',
+    // Arguments in either a single String or as an Array:
+    args = '-f markdown -t html';
+
+// Set your callback function
+callback = function (err, result) {
+  if (err) console.error('Oh Nos: ',err);
+  // Without the -o arg, the converted value will be returned.
+  return console.log(result), result;
+};
+
+// Call pandoc
+pandoc(src, args, callback);
+```
+
+...and in reverse: HTML -> Markdown
+
+```js
+var pandoc = require('node-pandoc'),
+    src = '<h1>Hello</h1><p>It&rsquo;s bananas</p>',
+    // Arguments in either a single String or as an Array:
+    args = '-f html -t markdown --atx-headers';
+
+// NOTE: The --atx-headers flag set above will produce <h1>s as:
+// # Hello
+//
+// ...while omitting --atx-headers flat will result in this style:
+// Hello
+// =====
+
+// Set your callback function
+callback = function (err, result) {
+  if (err) console.error('Oh Nos: ',err);
+  // Without the -o arg, the converted value will be returned.
+  return console.log(result), result;
+};
+
+// Call pandoc
+pandoc(src, args, callback);
+```
+
+## One more thing...
+
+It does URLs too.
+
+```js
+var pandoc = require('node-pandoc'),
+    src = 'https://www.npmjs.com/package/node-pandoc',
+    // Arguments in either a single String or as an Array:
+    args = '-f html -t docx -o node-pandoc.docx';
+
+// Set your callback function
+callback = function (err, result) {
+  if (err) console.error('Oh Nos: ',err);
+  // Without the -o arg, the converted value will be returned.
+  return console.log(result), result;
+};
+
+// Call pandoc
+pandoc(src, args, callback);
+```
+
+![Wokavagor](https://i.ytimg.com/vi/aDROVYwZ7IU/maxresdefault.jpg)
+> # ...it can go sideways and slantways and longways and backways and squareways and frontways and any other ways that you can think of.
+
 ## License
 
 Copyright &copy; Eric Shinn  

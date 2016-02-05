@@ -9,12 +9,17 @@ module.exports = function() {
   var callback;
   var pdSpawn;
   var result;
+  var isURL;
 
   // Event Handlers
   var onStdOutData;
   var onStdOutEnd;
   var onStdErrData;
   var onStatCheck;
+
+  isURL = function (src) {
+    return /^(https?|ftp):\/\//i.test(src);
+  };
 
   onStdOutData = function (data) {
     result = ""+data;
@@ -29,8 +34,8 @@ module.exports = function() {
   };
 
   onStatCheck = function (err, stats) {
-    // If src is a file, push the src back into args array
-    if (stats && stats.isFile()) {
+    // If src is a file or valid web URL, push the src back into args array
+    if ((stats && stats.isFile()) || isURL) {
       args.unshift(src);
     }
 
@@ -38,7 +43,7 @@ module.exports = function() {
     pdSpawn = spawn('pandoc', args, options);
 
     // If src is not a file, assume a string input.
-    if (stats === undefined) {
+    if ((typeof stats === "undefined") && !isURL) {
       pdSpawn.stdin.end(src, 'utf-8');
     }
 
@@ -52,6 +57,8 @@ module.exports = function() {
   args = Array.prototype.slice.call(arguments);
   // Save src out of the args array.
   src = args.shift();
+  // Check if src is URL match.
+  isURL = isURL(src);
   // Save the callback out of the args array.
   callback = args.pop();
 
