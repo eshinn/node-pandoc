@@ -8,7 +8,7 @@ module.exports = function() {
   var options;
   var callback;
   var pdSpawn;
-  var result;
+  var result = "";
   var isURL;
 
   // Event Handlers
@@ -22,7 +22,7 @@ module.exports = function() {
   };
 
   onStdOutData = function (data) {
-    result = ""+data;
+    result += data;
   };
 
   onStdOutEnd = function () {
